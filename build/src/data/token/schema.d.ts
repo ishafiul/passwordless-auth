@@ -24,16 +24,16 @@
 /// <reference types="mongoose/types/inferschematype" />
 import { Schema } from "mongoose";
 declare const _default: import("mongoose").Model<{
-    deviceUuId: string;
-    isExpired: boolean;
     userId: string;
+    deviceUuId: string;
     accessToken: string;
     refreshToken: string;
+    isExpired: boolean;
 }, {}, {}, {}, Schema<any, import("mongoose").Model<any, any, any, any, any>, {}, {}, {}, {}, "type", {
-    deviceUuId: string;
-    isExpired: boolean;
     userId: string;
+    deviceUuId: string;
     accessToken: string;
     refreshToken: string;
+    isExpired: boolean;
 }>>;
 export default _default;

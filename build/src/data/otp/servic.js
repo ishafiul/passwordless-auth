@@ -18,18 +18,18 @@ class OtpService {
         });
         await newOtp.save(callback);
     }
-    findActiveOtpByEmail(email, callback) {
-        schema_1.default.findOne({
+    async findActiveOtpByEmail(email, callback) {
+        await schema_1.default.findOne({
             email,
             isExpired: false
-        }, callback);
+        }, callback).clone();
     }
     async findValidOtp(email, deviceUuId, callback) {
-        schema_1.default.findOne({
+        await schema_1.default.findOne({
             email,
             deviceUuId,
             isExpired: false
-        }, callback);
+        }, callback).clone();
     }
     async expireOldOtp(email, callback) {
         await schema_1.default.updateMany({
@@ -38,7 +38,7 @@ class OtpService {
             isExpired: true
         }, {
             returnOriginal: false
-        }, callback);
+        }, callback).clone();
     }
 }
 exports.OtpService = OtpService;

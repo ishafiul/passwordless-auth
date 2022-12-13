@@ -38,14 +38,14 @@ class AuthController {
             let isUserExist = false;
             let userId = '';
             await this.userService.findUserByEmail(reqBody.email, (error, result) => {
-                isUserExist = !error;
-                if (!error) {
-                    userId = result.userId;
+                if (result) {
+                    isUserExist = true;
+                    userId = result._id;
                 }
             });
-            await this.otpService.findActiveOtpByEmail(reqBody.email, (activeOtpError) => {
+            await this.otpService.findActiveOtpByEmail(reqBody.email, async (activeOtpError) => {
                 if (!activeOtpError) {
-                    this.otpService.expireOldOtp(reqBody.email, (error) => {
+                    await this.otpService.expireOldOtp(reqBody.email, async (error) => {
                         if (error) {
                             (0, response_service_1.mongoError)(req, res);
                         }
@@ -137,23 +137,30 @@ class AuthController {
                         }
                         else {
                             if (validOtpResult.otp === reqBody.otp) {
-                                if (!validOtpResult.userId) {
-                                    await this.userService.createUser(reqBody.email, async (createUserError, _) => {
+                                if (validOtpResult.userId) {
+                                    await this.otpService.expireOldOtp(reqBody.email, (expireOldOtpError, __) => {
+                                        if (!expireOldOtpError) {
+                                            this.saveToken({
+                                                userId: validOtpResult.userId,
+                                                email: reqBody.email,
+                                                deviceUuId: reqBody.deviceUuid
+                                            }, res);
+                                        }
+                                        else {
+                                            (0, response_service_1.mongoError)(expireOldOtpError, res);
+                                        }
+                                    });
+                                }
+                                else {
+                                    await this.userService.createUser(reqBody.email, async (createUserError, createUserResult) => {
                                         if (!createUserError) {
                                             await this.otpService.expireOldOtp(reqBody.email, (expireOldOtpError, __) => {
                                                 if (!expireOldOtpError) {
-                                                    this.userService.findUserByEmail(reqBody.email, (UserFoundError, result) => {
-                                                        if (UserFoundError) {
-                                                            (0, response_service_1.mongoError)(UserFoundError, res);
-                                                        }
-                                                        else {
-                                                            this.saveToken({
-                                                                userId: result.userId,
-                                                                email: reqBody.email,
-                                                                deviceUuId: reqBody.deviceUuid
-                                                            }, res);
-                                                        }
-                                                    });
+                                                    this.saveToken({
+                                                        userId: createUserResult._id,
+                                                        email: reqBody.email,
+                                                        deviceUuId: reqBody.deviceUuid
+                                                    }, res);
                                                 }
                                                 else {
                                                     (0, response_service_1.mongoError)(expireOldOtpError, res);
@@ -162,20 +169,6 @@ class AuthController {
                                         }
                                         else {
                                             (0, response_service_1.mongoError)(createUserError, res);
-                                        }
-                                    });
-                                }
-                                else {
-                                    await this.otpService.expireOldOtp(reqBody.email, (expireOldOtpError, __) => {
-                                        if (expireOldOtpError) {
-                                            (0, response_service_1.mongoError)(expireOldOtpError, res);
-                                        }
-                                        else {
-                                            this.saveToken({
-                                                userId: validOtpResult.userId,
-                                                email: reqBody.email,
-                                                deviceUuId: reqBody.deviceUuid
-                                            }, res);
                                         }
                                     });
                                 }
@@ -195,15 +188,18 @@ class AuthController {
     async refreshToken(req, res) {
         try {
             const refreshToken = req.body.refreshToken;
-            await this.tokenService.findActiveToken('', refreshToken, req.body.deviceUuId, (error) => {
+            await this.tokenService.findActiveToken(refreshToken, req.body.deviceUuId, (error) => {
                 if (!error) {
                     this.tokenService.verifyRefreshToken(refreshToken, async (err, data) => {
-                        if (!err) {
+                        if (data) {
                             await this.saveToken({
                                 userId: data.userId,
                                 email: data.email,
                                 deviceUuId: req.body.deviceUuId
                             }, res);
+                        }
+                        else {
+                            (0, response_service_1.unauthorizedResponse)("refresh token expired", res);
                         }
                     });
                 }
@@ -236,7 +232,10 @@ class AuthController {
                         refreshToken
                     }, (saveError, saveResult) => {
                         if (!saveError) {
-                            (0, response_service_1.successResponse)('Token Created Successfully!', saveResult, res);
+                            (0, response_service_1.successResponse)('Token Created Successfully!', {
+                                accessToken: saveResult.accessToken,
+                                refreshToken: saveResult.refreshToken,
+                            }, res);
                         }
                         else {
                             (0, response_service_1.mongoError)(saveError, res);

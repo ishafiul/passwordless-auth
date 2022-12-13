@@ -1,52 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.somethingWrong = exports.mongoError = exports.badRequest = exports.failureResponse = exports.createdResponse = exports.successResponse = void 0;
+exports.somethingWrong = exports.mongoError = exports.badRequest = exports.failureResponse = exports.unauthorizedResponse = exports.createdResponse = exports.successResponse = void 0;
 const models_1 = require("./models");
-function successResponse(message, DATA, res) {
+function successResponse(message, data, res) {
     res.status(models_1.HttpStatusCode.SUCCESS).json({
-        STATUS: "SUCCESS",
-        MESSAGE: message,
-        DATA
+        status: "SUCCESS",
+        message,
+        data
     });
 }
 exports.successResponse = successResponse;
-function createdResponse(message, DATA, res) {
+function createdResponse(message, data, res) {
     res.status(models_1.HttpStatusCode.CREATED).json({
-        STATUS: "CREATED",
-        MESSAGE: message,
-        DATA
+        status: "CREATED",
+        message,
+        data
     });
 }
 exports.createdResponse = createdResponse;
-function failureResponse(message, DATA, res) {
+function unauthorizedResponse(message, res) {
+    res.status(models_1.HttpStatusCode.UNAUTHORIZED).json({
+        status: "FAILURE",
+        message,
+    });
+}
+exports.unauthorizedResponse = unauthorizedResponse;
+function failureResponse(message, data, res) {
     res.status(models_1.HttpStatusCode.SUCCESS).json({
-        STATUS: "FAILURE",
-        MESSAGE: message,
-        DATA
+        status: "FAILURE",
+        message,
+        data
     });
 }
 exports.failureResponse = failureResponse;
 function badRequest(message, res) {
     res.status(models_1.HttpStatusCode.BAD_REQUEST).json({
-        STATUS: "FAILURE",
-        MESSAGE: message,
-        DATA: {}
+        status: "FAILURE",
+        message,
+        data: {}
     });
 }
 exports.badRequest = badRequest;
 function mongoError(err, res) {
     res.status(models_1.HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-        STATUS: "FAILURE",
-        MESSAGE: 'MongoDB error',
-        DATA: err
+        status: "FAILURE",
+        message: 'MongoDB error',
+        data: err
     });
 }
 exports.mongoError = mongoError;
 function somethingWrong(err, res) {
     res.status(models_1.HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-        STATUS: "ERROR",
-        MESSAGE: `Something Wrong! ${err.message}`,
-        DATA: err
+        status: "ERROR",
+        message: `Something Wrong! ${err.message}`,
+        data: err
     });
 }
 exports.somethingWrong = somethingWrong;

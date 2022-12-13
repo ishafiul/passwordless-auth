@@ -7,10 +7,10 @@ const schema_1 = __importDefault(require("./schema"));
 const schema_2 = __importDefault(require("./schema"));
 const utils_1 = require("../../utils/utils");
 class UserService {
-    findUserByEmail(email, callback) {
-        schema_1.default.findOne({
-            email
-        }, callback);
+    async findUserByEmail(email, callback) {
+        return await schema_1.default.findOne({
+            email,
+        }, callback).clone();
     }
     async createUser(email, callback) {
         const newUser = new schema_2.default({

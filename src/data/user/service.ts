@@ -5,11 +5,10 @@ import {getUsername} from "../../utils/utils";
 import {UserType} from "./models";
 
 export default class UserService {
-    public findUserByEmail(email: string, callback?: (error: CallbackError, result: any) => any) {
-        const gg = UserSchema.findOne({
-            email
-        }, callback).clone();
-        return gg
+    public async findUserByEmail(email: string, callback?: (error: CallbackError, result: any) => any) {
+        return await UserSchema.findOne({
+            email,
+        }, callback).clone()
     }
 
     public async createUser(email: string, callback?: (error: CallbackError, result: any) => any) {

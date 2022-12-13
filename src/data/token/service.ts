@@ -17,9 +17,8 @@ export default class TokenService {
         await newToken.save(callback!);
     }
 
-    public async findActiveToken(accessToken?: string, refreshToken?: string, deviceUuId?: string, callback?: (error: CallbackError, result: any) => any) {
+    public async findActiveToken(refreshToken?: string, deviceUuId?: string, callback?: (error: CallbackError, result: any) => any) {
         await TokenSchema.findOne({
-            accessToken,
             refreshToken,
             deviceUuId,
             isExpired: false
@@ -49,7 +48,7 @@ export default class TokenService {
     }
 
     public generateRefreshToken(user: string | object | Buffer) {
-        return sign(user, process.env.TOKEN_SECRET_REFRESH || '', {expiresIn: '2m'})
+        return sign(user, process.env.TOKEN_SECRET_REFRESH || '', {expiresIn: '5m'})
     }
 
 }

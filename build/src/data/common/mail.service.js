@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MailService = void 0;
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
 class MailService {
     async sendEmail(to, subject, message, htmlMessage) {
         const nodemailer = require("nodemailer");

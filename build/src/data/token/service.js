@@ -18,13 +18,12 @@ class TokenService {
         });
         await newToken.save(callback);
     }
-    async findActiveToken(accessToken, refreshToken, deviceUuId, callback) {
+    async findActiveToken(refreshToken, deviceUuId, callback) {
         await schema_1.default.findOne({
-            accessToken,
             refreshToken,
             deviceUuId,
             isExpired: false
-        }, callback);
+        }, callback).clone();
     }
     async expireOldTokens(email, callback) {
         await schema_1.default.updateMany({
@@ -33,7 +32,7 @@ class TokenService {
             isExpired: true
         }, {
             returnOriginal: false
-        }, callback);
+        }, callback).clone();
     }
     verifyRefreshToken(refreshToken, callback) {
         (0, jsonwebtoken_1.verify)(refreshToken, process.env.TOKEN_SECRET_REFRESH || '', callback);
@@ -45,7 +44,7 @@ class TokenService {
         return (0, jsonwebtoken_1.sign)(user, process.env.TOKEN_SECRET || '', { expiresIn: '1m' });
     }
     generateRefreshToken(user) {
-        return (0, jsonwebtoken_1.sign)(user, process.env.TOKEN_SECRET_REFRESH || '', { expiresIn: '2m' });
+        return (0, jsonwebtoken_1.sign)(user, process.env.TOKEN_SECRET_REFRESH || '', { expiresIn: '5m' });
     }
 }
 exports.default = TokenService;

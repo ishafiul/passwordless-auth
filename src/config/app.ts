@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URL || '').then(() => console.log('connected 
 
 app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
     const figlet = require('figlet');
-    figlet('C r o s s  -  R o a d', {
+    figlet('passless auth', {
         font: 'Doh',
     }, (err: any, data: any) => {
         res.send(`<div style='font-size: 10px;margin: auto;
@@ -33,13 +33,5 @@ app.get('/', (req: any, res: { send: (arg0: string) => void; }) => {
     });
 
 })
-
-// app.all('*', (req, res) => {
-//     res.status(404).json({
-//         "status": HttpStatus.ERROR,
-//         "message": "Invalid URL!",
-//         "code": "404"
-//     });
-// });
 
 app.use("/auth", AuthRouter);

@@ -24,7 +24,6 @@ const OtpSchema = new mongoose_1.Schema({
     },
     userId: {
         type: String,
-        unique: true
     }
 }, { timestamps: true });
 exports.default = (0, mongoose_1.model)("otp", OtpSchema);

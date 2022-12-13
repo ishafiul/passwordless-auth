@@ -20,7 +20,7 @@ app.use((0, cors_1.default)({
 mongoose_1.default.connect(process.env.MONGO_URL || '').then(() => console.log('connected to mongodb'));
 app.get('/', (req, res) => {
     const figlet = require('figlet');
-    figlet('C r o s s  -  R o a d', {
+    figlet('passless auth', {
         font: 'Doh',
     }, (err, data) => {
         res.send(`<div style='font-size: 10px;margin: auto;
@@ -29,13 +29,6 @@ app.get('/', (req, res) => {
         justify-content: center;
         background-color: #F5F5F5;
         padding: 10px; '><pre>${data} </pre></div>`);
-    });
-});
-app.all('*', (req, res) => {
-    res.status(404).json({
-        "status": "ERROR",
-        "message": "Invalid URL!",
-        "code": "404"
     });
 });
 app.use("/auth", auth_route_1.AuthRouter);

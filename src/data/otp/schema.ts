@@ -25,7 +25,6 @@ const OtpSchema = new Schema({
     },
     userId: {
         type: String,
-        unique: true
     }
 }, {timestamps: true});
 

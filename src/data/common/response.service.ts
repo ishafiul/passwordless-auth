@@ -17,6 +17,12 @@ export function createdResponse(message: string, data: any | null, res: Response
     });
 }
 
+export function unauthorizedResponse(message: string,res: Response) {
+    res.status(HttpStatusCode.UNAUTHORIZED).json({
+        status: HttpStatus.FAILURE,
+        message,
+    });
+}
 export function failureResponse(message: string, data: any, res: Response) {
     res.status(HttpStatusCode.SUCCESS).json({
         status: HttpStatus.FAILURE,
