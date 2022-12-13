@@ -1,4 +1,4 @@
-# 📁 Collection: Auth 
+# Passwordless Authentication 
 
 
 ## End-point: Create Device UuId
