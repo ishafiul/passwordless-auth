@@ -1,10 +1,10 @@
 # Passwordless Authentication 
 
 
-## End-point: Create Device UuId
-this api will create device uuid .
+## End-point: Create Device UUID
+this API will create device UUID.
 
-here userType, deviceType, appInfo, and ipAddress are **requred.**
+here userType, deviceType, appInfo, and ipAddress are **required.**
 
 userType is a enum of
 
@@ -56,7 +56,7 @@ enum UserType  {
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## End-point: Request OTP
-here user can request otp for login or signup. if there is no user with this email, system will create signup otp.
+here user can request OTP for login or signup. if there is no user with this email, the system will create a signup OTP.
 ### Method: POST
 >```
 >{{localhost}}/auth/req-otp
@@ -83,9 +83,9 @@ here user can request otp for login or signup. if there is no user with this ema
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## End-point: Verify OTP
-if otp valid it will return access token. if otp valid and there is no user with is email, system will create a new user.
+if the OTP is valid it will return access tokens. if the OTP is valid and there is no user with this email, the system will create a new user.
 
-with this system , one user can only use one device login at a same time. other access token will expired and other device login will expire
+here, one user can only use one device login at the same time. other access tokens will be expire and other device login will be expire 
 ### Method: POST
 >```
 >{{localhost}}/auth/verify-otp
@@ -116,7 +116,7 @@ with this system , one user can only use one device login at a same time. other 
 ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
 
 ## End-point: Refresh Token
-with this system , one user can only use one device login at a same time. other access token will expired.
+with this system, one user can only use one device login at the same time. other access tokens will be expired.
 ### Method: POST
 >```
 >{{localhost}}/auth/refresh-token
